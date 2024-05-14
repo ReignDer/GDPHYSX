@@ -141,8 +141,10 @@
   <ItemGroup>
     <ClCompile Include="GDPHYSX-SetUp.cpp" />
     <ClCompile Include="glad.c" />
+    <ClCompile Include="P6\MyVector.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="P6\MyVector.h" />
     <ClInclude Include="tiny_obj_loader.h" />
   </ItemGroup>
   <ItemGroup>

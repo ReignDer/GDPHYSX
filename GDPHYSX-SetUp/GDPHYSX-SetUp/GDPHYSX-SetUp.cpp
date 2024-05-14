@@ -10,6 +10,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include "P6/MyVector.h"
+
 #define TINYOBJLOADER_IMPLEMENTATION
 #include "tiny_obj_loader.h"
 
@@ -412,14 +414,14 @@ public:
     }
 
     //Set Object Position
-    void updateTranslate(float translate_x, float translate_y, float translate_z) {
-        if (translate_y > 0) {
-            translate_y = 0;
+    void updateTranslate(glm::vec3 position) {
+        if (position.y > 0) {
+            position.y = 0;
         }
 
         this->transformation_matrix =
             glm::translate(this->identity_matrix4,
-                glm::vec3(translate_x, translate_y, translate_z)
+                glm::vec3(position.x, position.y, position.z)
             );
         //Current Position of model
         this->modelPosition = glm::vec3(this->transformation_matrix[3]);
@@ -786,6 +788,8 @@ int main(void)
     object.createModel();
     cameraOrtho->createCamera();
 
+    P6::MyVector position(10, 0, 0);
+    position += P6::MyVector(-10, 0, 0);
 
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
@@ -799,8 +803,11 @@ int main(void)
 
         glUseProgram(shader.getShaderProg());
 
+       
+
         pCameraOrtho->performCamera(shader.getShaderProg());
-        object.updateTranslate(0.f, 0.f, 0.f);
+        position = position + P6::MyVector(-0.001, 0, 0);
+        object.updateTranslate((glm::vec3)position);
         object.updateScale(0.5f, 0.5f, 0.5f);
         object.perform();
 
