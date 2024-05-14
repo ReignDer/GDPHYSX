@@ -806,7 +806,7 @@ int main(void)
        
 
         pCameraOrtho->performCamera(shader.getShaderProg());
-        position = position + P6::MyVector(-0.001, 0, 0);
+        position = position - P6::MyVector(-0.001, 0, 0);
         object.updateTranslate((glm::vec3)position);
         object.updateScale(0.5f, 0.5f, 0.5f);
         object.perform();
