@@ -1,5 +1,6 @@
 // GDPHYSX-SetUp.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
+#include <chrono>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
@@ -11,6 +12,8 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include "P6/MyVector.h"
+#include "P6/P6Particles.h"
+
 
 #define TINYOBJLOADER_IMPLEMENTATION
 #include "tiny_obj_loader.h"
@@ -19,6 +22,9 @@
 #include "stb_image.h"
 #define PI 3.14159
 
+using namespace std::chrono_literals;
+
+constexpr std::chrono::nanoseconds timestep(16ms);
 
 class Shader {
 private:
@@ -650,13 +656,22 @@ public:
 public:
     //Create Orthographic Projection
     void createProjection() {
-        this->projectionMatrix = glm::ortho(-10.0f, //Left
-            10.0f, //Right
-            -10.0f, //Bottom
-            10.0f, //Top
+        this->projectionMatrix = glm::ortho(-50.0f, //Left
+            50.0f, //Right
+            -50.0f, //Bottom
+            50.0f, //Top
             -0.1f, //Z-Near
             100.f); //Z-Far
     }
+    void setProjection(float left, float right, float bottom, float top) {
+        this->projectionMatrix = glm::ortho(-left, //Left
+            right, //Right
+            -bottom, //Bottom
+            top, //Top
+            -0.1f, //Z-Near
+            100.f); //Z-Far
+    }
+
 private:
     //New camera position
     void updateCameraPos() {
@@ -733,8 +748,11 @@ void drawCircle(float centerX, float centerY, float radius) {
     glEnd();
 }
 
+
+
 int main(void)
 {
+
     //Load the shader file into a string stream
     std::fstream vertSrc("Shaders/Sample.vert");
     std::stringstream vertBuff;
@@ -775,6 +793,7 @@ int main(void)
 
     MyCamera* cameraOrtho = new OrthoCamera(window_height, window_width);
     OrthoCamera* pCameraOrtho = (OrthoCamera*)cameraOrtho;
+    //pCameraOrtho->setProjection(500,500,500,500);
 
     /* Make the window's context current */
     glfwMakeContextCurrent(window);
@@ -788,12 +807,52 @@ int main(void)
     object.createModel();
     cameraOrtho->createCamera();
 
-    P6::MyVector position(10, 0, 0);
-    position += P6::MyVector(-10, 0, 0);
+    P6::P6Particles particle = P6::P6Particles();
 
+    int px, py, pz;
+    std::cout << "X Velocity: "; 
+    std::cin >> px;
+    std::cout << "Y Velocity: ";
+    std::cin >> pz;
+    std::cout << "Z Velocity: ";
+    std::cin >> py;
+
+    using clock = std::chrono::high_resolution_clock;
+    auto start_time = clock::now();
+    auto curr_time = clock::now();
+    auto prev_time = curr_time;
+    std::chrono::nanoseconds curr_ns(0);
+
+    particle.Position = P6::MyVector(0, 0, -60);
+    particle.Velocity = P6::MyVector(px, py, pz);
+    particle.Acceleration = P6::MyVector(0,0,-30);
+
+    P6::MyVector position(10, 0, 0);
+
+    position += P6::MyVector(-10, 0, 0);
+    bool end = false;
     /* Loop until the user closes the window */
-    while (!glfwWindowShouldClose(window))
+    while (!glfwWindowShouldClose(window) && !end)
     {
+        curr_time = clock::now();
+
+        auto dur = std::chrono::duration_cast<std::chrono::nanoseconds>(curr_time - prev_time);
+        prev_time = curr_time;
+
+        curr_ns += dur;
+
+        if (curr_ns >= timestep) {
+            auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(curr_ns);
+            //std::cout << "MS: " << (float)ms.count() << '\n';
+
+            curr_ns -= curr_ns;
+
+            //std::cout << "P6 Update\n";
+            particle.Update((float)ms.count() / 1000);
+        }
+        //std::cout << "Normal Update\n";
+
+
         /* Render here */
         glClear(GL_COLOR_BUFFER_BIT);
 
@@ -807,9 +866,16 @@ int main(void)
 
         pCameraOrtho->performCamera(shader.getShaderProg());
         position = position - P6::MyVector(-0.001, 0, 0);
-        object.updateTranslate((glm::vec3)position);
+        object.updateTranslate((glm::vec3)particle.Position);
         object.updateScale(0.5f, 0.5f, 0.5f);
         object.perform();
+
+        if (particle.Position.z <= -60.0001) {
+            auto end_time = clock::now();
+            auto land = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
+            std::cout << "It took "<<  land.count()/1000.f<< " seconds for it to land";
+            end = true;
+        }
 
         //glColor3f(1.f,1.f,0.f);
         //drawCircle(0.f,0.f,0.5f);
