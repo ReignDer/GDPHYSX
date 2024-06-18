@@ -139,14 +139,32 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="P6\GravityForceGenerator.cpp" />
+    <ClCompile Include="P6\ForceRegistry.cpp" />
+    <ClCompile Include="P6\ForceGenerator.cpp" />
     <ClCompile Include="GDPHYSX-SetUp.cpp" />
     <ClCompile Include="glad.c" />
+    <ClCompile Include="Model3D.cpp" />
+    <ClCompile Include="MyCamera.cpp" />
+    <ClCompile Include="OrthoCamera.cpp" />
     <ClCompile Include="P6\P6Particles.cpp" />
     <ClCompile Include="P6\MyVector.cpp" />
+    <ClCompile Include="P6\PhysicsWorld.cpp" />
+    <ClCompile Include="P6\RenderParticle.cpp" />
+    <ClCompile Include="Shader.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="P6\GravityForceGenerator.h" />
+    <ClInclude Include="P6\ForceRegistry.h" />
+    <ClInclude Include="P6\ForceGenerator.h" />
+    <ClInclude Include="Model3D.h" />
+    <ClInclude Include="MyCamera.h" />
+    <ClInclude Include="OrthoCamera.h" />
     <ClInclude Include="P6\P6Particles.h" />
     <ClInclude Include="P6\MyVector.h" />
+    <ClInclude Include="P6\PhysicsWorld.h" />
+    <ClInclude Include="P6\RenderParticle.h" />
+    <ClInclude Include="Shader.h" />
     <ClInclude Include="tiny_obj_loader.h" />
   </ItemGroup>
   <ItemGroup>

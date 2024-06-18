@@ -5,6 +5,19 @@ namespace P6 {
 
 	class P6Particles
 	{
+	protected:
+		bool isDestroyed = false;
+
+	public:
+		void AddForce(MyVector force);
+		void ResetForce();
+		float damping = 0.f;
+		void Destroy();
+
+		bool IsDestroyed() {
+			return isDestroyed;
+		}
+
 	public:
 		float mass = 0;
 
@@ -15,6 +28,8 @@ namespace P6 {
 		P6Particles();
 
 	protected:
+		MyVector accumulatedForce = MyVector(0, 0, 0);
+
 		void UpdatePosition(float time);
 		void UpdateVelocity(float time);
 

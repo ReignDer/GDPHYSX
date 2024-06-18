@@ -32,6 +32,11 @@ namespace P6 {
 				return MyVector(this->x - v.x, this->y - v.y, this->z - v.z);
 			}
 
+			//Divide
+			MyVector operator/ (const float v) {
+				return MyVector(this->x / v, this->y / v, this->z / v);
+			}
+
 			//Component Product
 			MyVector operator* (const MyVector v) {
 				return MyVector(this->x * v.x, this->y * v.y, this->z * v.z);
