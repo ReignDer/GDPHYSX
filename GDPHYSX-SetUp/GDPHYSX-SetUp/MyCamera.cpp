@@ -4,7 +4,7 @@ MyCamera::MyCamera() {}
 
 //Create the initial camera position
 void MyCamera::createCameraPos() {
-	this->cameraPos = glm::vec3(0.f, 3.f, 10.f);
+	this->cameraPos = glm::vec3(0.f, 0.f, 3.f);
 
 	//Construct the Position Matrix
 
@@ -17,7 +17,7 @@ void MyCamera::createCameraPos() {
 	this->WorldUp = glm::vec3(0, 1.f, 0);
 
 	//Camera's Center
-	this->Center = glm::vec3(0.f, 1.f, 0.f);
+	this->Center = glm::vec3(0.f, 0.f, 0.f);
 
 	//Get Forward
 	this->F = glm::vec3(this->Center - this->cameraPos);

@@ -98,7 +98,7 @@ public:
     //Set Object Position
     void updateTranslate(glm::vec3 position);
     //Scale the Object
-    void updateScale(float scale_x, float scale_y, float scale_z);
+    void updateScale(glm::vec3 scale);
 
     //Rotate the Object
     void updateRotation(float rotate_x, float rotate_y, float rotate_z);
@@ -119,6 +119,9 @@ public:
     GLuint getShaderProg();
 
     glm::vec3 getModelPos();
+
+    glm::vec3 getColor();
+
     //Setter
     void setColor(glm::vec3 color);
 };

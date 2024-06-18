@@ -11,7 +11,6 @@ namespace P6 {
 	public:
 		void AddForce(MyVector force);
 		void ResetForce();
-		float damping = 0.f;
 		void Destroy();
 
 		bool IsDestroyed() {
@@ -19,7 +18,11 @@ namespace P6 {
 		}
 
 	public:
+
 		float mass = 0;
+		float damping = 0.9f;
+		float lifespan = 1.f;
+		float lifeRemaining = 0.f;
 
 		MyVector Position;
 		MyVector Velocity;

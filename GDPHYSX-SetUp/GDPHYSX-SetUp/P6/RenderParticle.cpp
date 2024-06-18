@@ -5,7 +5,8 @@ void RenderParticle::Draw()
 	if (!PhysicsParticle->IsDestroyed()) {
 		RenderObject->setColor((glm::vec3)Color);
 		RenderObject->updateTranslate((glm::vec3)PhysicsParticle->Position);
-		RenderObject->updateScale(5.f, 5.f, 5.f);
+		RenderObject->updateScale((glm::vec3)Scale);
 		RenderObject->perform();
 	}
+
 }

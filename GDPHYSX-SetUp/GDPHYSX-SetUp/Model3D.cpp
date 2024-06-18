@@ -287,9 +287,7 @@ void Model3D::setShaders(GLuint shaderProg) {
 
     //Set Object Position
     void Model3D::updateTranslate(glm::vec3 position) {
-        if (position.y > 0) {
-            position.y = 0;
-        }
+
 
         this->transformation_matrix =
             glm::translate(this->identity_matrix4,
@@ -299,10 +297,10 @@ void Model3D::setShaders(GLuint shaderProg) {
         this->modelPosition = glm::vec3(this->transformation_matrix[3]);
     }
     //Scale the Object
-    void Model3D::updateScale(float scale_x, float scale_y, float scale_z) {
+    void Model3D::updateScale(glm::vec3 scale) {
         this->transformation_matrix =
             glm::scale(this->transformation_matrix,
-                glm::vec3(scale_x, scale_y, scale_z)
+                glm::vec3(scale.x, scale.y, scale.z)
             );
     }
 
@@ -378,6 +376,10 @@ void Model3D::setShaders(GLuint shaderProg) {
 
     glm::vec3 Model3D::getModelPos() {
         return this->modelPosition;
+    }
+    glm::vec3 Model3D::getColor()
+    {
+        return this->color;
     }
     //Setter
     void Model3D::setColor(glm::vec3 color) {

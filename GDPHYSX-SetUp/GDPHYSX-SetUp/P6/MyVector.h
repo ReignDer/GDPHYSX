@@ -16,57 +16,34 @@ namespace P6 {
 
 			explicit operator glm::vec3() const { return glm::vec3(x, y, z); }
 
-			void operator+= (const MyVector v) {
-				this->x += v.x;
-				this->y += v.y;
-				this->z += v.z;
-			}
+			void operator+= (const MyVector v);
 
 			//Addition
-			MyVector operator+ (const MyVector v) {
-				return MyVector(this->x + v.x, this->y + v.y, this->z + v.z);
-			}
+			MyVector operator+ (const MyVector v);
 
 			//Subtraction
-			MyVector operator- (const MyVector v) {
-				return MyVector(this->x - v.x, this->y - v.y, this->z - v.z);
-			}
+			MyVector operator- (const MyVector v);
 
 			//Divide
-			MyVector operator/ (const float v) {
-				return MyVector(this->x / v, this->y / v, this->z / v);
-			}
+			MyVector operator/ (const float v);
 
 			//Component Product
-			MyVector operator* (const MyVector v) {
-				return MyVector(this->x * v.x, this->y * v.y, this->z * v.z);
-			}
+			MyVector operator* (const MyVector v);
 
 			//Scalar Multiplication
-			MyVector operator* (const float scalarMul) {
-				return MyVector(this->x * scalarMul, this->y * scalarMul, this->z * scalarMul);
-			}
+			MyVector operator* (const float scalarMul);
 
 			//Dot Product
-			float dotProduct(const MyVector v) {
-				return ((this->x * v.x) + (this->y * v.y) + (this->z * v.z));
-			}
+			float dotProduct(const MyVector v);
 
 			//Vector Product
-			MyVector vectorProduct(const MyVector v) {
-				//								x                  ,                   y                 ,                  z
-				return MyVector(((this->y * v.z) - (this->z * v.y)), ((this->x  * v.z) - (this->z * v.x)), ((this->x * v.y) - (this->y * v.x)));
-			}
+			MyVector vectorProduct(const MyVector v);
 
 			//Magnitude
-			float magnitude() {
-				return sqrt(this->x * this->x + this->y * this->y + this->z * this->z);
-			}
+			float magnitude();
 
 			//Direction
-			MyVector direction() {
-				return MyVector(this->x/magnitude(),this->y/magnitude(),this->z/magnitude());
-			}
+			MyVector normalize();
 	};
 }
 

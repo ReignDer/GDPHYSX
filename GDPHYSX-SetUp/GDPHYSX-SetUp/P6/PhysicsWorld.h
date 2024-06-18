@@ -20,7 +20,7 @@ namespace P6 {
 	private:
 		void UpdateParticleList();
 
-		GravityForceGenerator Gravity = GravityForceGenerator(MyVector(0, 0, -9.8));
+		GravityForceGenerator Gravity = GravityForceGenerator(MyVector(0, -9.8, 0));
 	};
 }
 

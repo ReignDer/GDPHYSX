@@ -24,6 +24,8 @@ P6::P6Particles::P6Particles()
 	this->Velocity = MyVector();
 	this->Position = MyVector();
 	this->mass = 0;
+	this->lifespan = 1.f;
+	this->lifeRemaining = 0.f;
 }
 
 void P6::P6Particles::UpdatePosition(float time)
@@ -40,8 +42,14 @@ void P6::P6Particles::UpdateVelocity(float time)
 
 void P6::P6Particles::Update(float time)
 {
+	this->lifespan -= time;
+	if (lifespan <= 0) {
+		this->Destroy();
+		return;
+	}
 	this->UpdatePosition(time);
 	this->UpdateVelocity(time);
+	//Reset the forces after calculations
 	this->ResetForce();
 }
 
