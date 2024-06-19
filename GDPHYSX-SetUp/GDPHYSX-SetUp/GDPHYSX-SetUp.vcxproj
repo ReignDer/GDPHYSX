@@ -139,6 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Input.cpp" />
     <ClCompile Include="P6\DragForceGenerator.cpp" />
     <ClCompile Include="P6\GravityForceGenerator.cpp" />
     <ClCompile Include="P6\ForceRegistry.cpp" />
@@ -156,6 +157,7 @@
     <ClCompile Include="Shader.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Input.h" />
     <ClInclude Include="P6\DragForceGenerator.h" />
     <ClInclude Include="P6\GravityForceGenerator.h" />
     <ClInclude Include="P6\ForceRegistry.h" />

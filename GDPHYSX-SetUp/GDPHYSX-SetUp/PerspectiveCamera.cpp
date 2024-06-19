@@ -7,14 +7,14 @@
     this->window_width = window_width;
 }
 
-//Create Perpective Projection
+//Create Perspective Projection
 
 void PerspectiveCamera::createProjection() {
     this->projectionMatrix = glm::perspective(
         glm::radians(90.f), //FOV
         this->window_height / this->window_width, //Aspect ratio
         0.1f, //ZNear > 0
-        300.f // ZFar
+        1000.f // ZFar
     );
 
 }
@@ -32,7 +32,7 @@ void PerspectiveCamera::updateZfarView() {
 //Source::learnopengl.com/Getting-started/Camera
 
 void PerspectiveCamera::updateCameraPos() {
-    this->cameraPos = glm::vec3(0, 0, 200.f);
+    this->cameraPos = glm::vec3(0, 0.f, 500.f);
     /*float speed = 0.005f;*/
 
     ////camera movement
@@ -52,13 +52,12 @@ void PerspectiveCamera::updateCameraPos() {
     //    this->cameraPos.y = 5;
     //}
     this->cameraPositionMatrix =
-        glm::translate(glm::mat4(1.0f), //Intialize it as an Identity Matrix
+        glm::translate(glm::mat4(1.0f), //Initialize it as an Identity Matrix
             this->cameraPos * -1.f); //Multiply to -1 since we need -P
-
 
 }
 
-//Update view withh lookAt function
+//Update view with lookAt function
 //Source::learnopengl.com/Getting-started/Camera
 
 void PerspectiveCamera::updateViewMatrix() {

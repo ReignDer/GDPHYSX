@@ -5,6 +5,7 @@
 
 #include <iostream>
 #include <string>
+#include <random>
 
 #define TINYOBJLOADER_IMPLEMENTATION
 #define STB_IMAGE_IMPLEMENTATION
@@ -14,6 +15,7 @@
 #include "MyCamera.h"
 #include "OrthoCamera.h"
 #include "PerspectiveCamera.h"
+#include "Input.h"
 
 
 #include "P6/MyVector.h"
@@ -29,7 +31,82 @@ using namespace std::chrono_literals;
 
 constexpr std::chrono::nanoseconds timestep(16ms);
 
-
+//void Key_Callback(GLFWwindow* window, // the pointer to the window
+//    int key, // the keycode being pressed
+//    int scancode, // Physical position of the press on keyboard
+//    int action, // Either Press / Release
+//    int mods) //Which modifier keys is held down
+//{
+//    //Flags for player movement
+//    //Down
+//    if (key == GLFW_KEY_S) {
+//        if (action == GLFW_PRESS)
+//            down = true;
+//        else if (action == GLFW_RELEASE)
+//            down = false;
+//    }
+//    //Up
+//    if (key == GLFW_KEY_W) {
+//        if (action == GLFW_PRESS)
+//            up = true;
+//        else if (action == GLFW_RELEASE)
+//            up = false;
+//    }
+//
+//    //Left
+//    if (key == GLFW_KEY_A) {
+//        if (action == GLFW_PRESS)
+//            left = true;
+//        else if (action == GLFW_RELEASE)
+//            left = false;
+//    }
+//
+//    //Right
+//    if (key == GLFW_KEY_D) {
+//        if (action == GLFW_PRESS)
+//            right = true;
+//        else if (action == GLFW_RELEASE)
+//            right = false;
+//    }
+//
+//    //Flags for spawning objects
+//    if (key == GLFW_KEY_SPACE && action == GLFW_PRESS)
+//        spawn = true;
+//    else if (key == GLFW_KEY_SPACE && action == GLFW_RELEASE)
+//        spawn = false;
+//
+//    if (key == GLFW_KEY_ESCAPE)
+//        escape = true;
+//
+//}
+////Call Mouse
+////Source::learnopengl.com/Getting-started/Camera
+//void mouse_callback(GLFWwindow* window, double xpos, double ypos)
+//{
+//    if (firstMouse)
+//    {
+//        lastX = xpos;
+//        lastY = ypos;
+//        firstMouse = false;
+//    }
+//
+//    float xoffset = xpos - lastX;
+//    float yoffset = lastY - ypos;
+//    lastX = xpos;
+//    lastY = ypos;
+//
+//    float sensitivity = 0.1f;
+//    xoffset *= sensitivity;
+//    yoffset *= sensitivity;
+//
+//    yaw += xoffset;
+//    pitch += yoffset;
+//
+//    if (pitch > 89.0f)
+//        pitch = 89.0f;
+//    if (pitch < -89.0f)
+//        pitch = -89.0f;
+//}
 int main(void)
 {
 
@@ -71,18 +148,23 @@ int main(void)
     float window_width = 800;
     float window_height = 800;
 
-    std::srand((unsigned)time(NULL));
-
+    //Instantiate Camera
     MyCamera* cameraOrtho = new OrthoCamera(window_height, window_width);
     OrthoCamera* pCameraOrtho = (OrthoCamera*)cameraOrtho;
 
     MyCamera* cameraPerspective = new PerspectiveCamera(window_height, window_width);
-    PerspectiveCamera* pCameraPespective = (PerspectiveCamera*)cameraPerspective;
+    PerspectiveCamera* pCameraPerspective = (PerspectiveCamera*)cameraPerspective;
 
     /* Make the window's context current */
     glfwMakeContextCurrent(window);
     gladLoadGL();
 
+    Input input;
+    glfwSetWindowUserPointer(window, &input);
+    //Keyboard and Mouse inputs
+    glfwSetKeyCallback(window, Input::Key_Callback);
+    //glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    //glfwSetCursorPosCallback(window, mouse_callback);
 
     Shader shader(v, f);
 
@@ -96,17 +178,14 @@ int main(void)
 
     Model3D object4 = object;
     
-
+    //Initialize Camera
     cameraOrtho->createCamera();
     cameraPerspective->createCamera();
 
     P6::PhysicsWorld pWorld = P6::PhysicsWorld();
-    //P6::P6Particles particle = P6::P6Particles();
-    //P6::P6Particles particle2 = P6::P6Particles();
-    //P6::P6Particles particle3 = P6::P6Particles();
-    //P6::P6Particles particle4 = P6::P6Particles();
     std::list<RenderParticle*> RenderParticles;
 
+    //Amount of Particles
     int sparkAmount = 0;
     std::cout << "Enter Spark Amount: ";
     std::cin >> sparkAmount;
@@ -120,69 +199,48 @@ int main(void)
 
     std::chrono::nanoseconds curr_ns(0);
     
+    //Better Random Distribution
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist(1.0f,10.0f);
+    std::uniform_real_distribution<float> distForce(10.f, 50.f);
+
+    std::uniform_real_distribution<float> distAngle(70.f, 110.f);
+    std::uniform_real_distribution<float> distAngle_2(0.f, 360.f);
+
+
 
     for (int i = 0; i < sparkAmount; i++) {
-        //Create New Particle
+
+        /*------------Create New Particle-----------------*/
         P6::P6Particles* newParticle = new P6::P6Particles();
+
         //Set Position to the bottom
         newParticle->Position = P6::MyVector(0, -400, 0);
+
         //Set mass and lifespan from 1-10;
-        newParticle->mass = 1.0f;
-        newParticle->lifespan = 1 + ((rand() % 10));
+        newParticle->mass = 0.01f;
+        newParticle->lifespan = dist(rd);
         newParticle->lifeRemaining = newParticle->lifespan;
+
+        float angle = distAngle(rd) * (PI / 180.f);
+        float angle_2 = distAngle_2(rd) * (PI / 180.f);
+        float velocity = distForce(rd);
         //Add force to the sparks to create a fountain firework
-        P6::MyVector randomForce = P6::MyVector(rand() % 2000 - 1000, rand() % 3000 + 5000, 0);
+        P6::MyVector randomForce = P6::MyVector(velocity * std::cosf(angle) * std::cosf(angle_2), velocity * std::sinf(angle), velocity * std::cosf(angle) * std::sinf(angle_2));
         newParticle->AddForce(randomForce);
-        //Add particles to the Physics World
+        //Add particles to the Physics World 
         pWorld.AddParticle(newParticle);
 
         /*---------------Rendering particle----------------*/
         
         //Randomize Color and Radius 
-        P6::MyVector randomColor = P6::MyVector((float)rand() / RAND_MAX,
-            (float)rand() / RAND_MAX, (float)rand() / RAND_MAX);
-        int randomRadius = 2 + (rand() % 10);
+        P6::MyVector randomColor = P6::MyVector((float)std::rand() / RAND_MAX,
+            (float)std::rand() / RAND_MAX, (float)std::rand() / RAND_MAX);
+        int randomRadius = 2 + (std::rand() % 10);
         P6::MyVector randomScale = P6::MyVector(randomRadius, randomRadius, randomRadius);
         RenderParticle* rp = new RenderParticle(newParticle, &object, randomColor,randomScale);
         RenderParticles.push_back(rp);
     }
-
-    //particle.Position = P6::MyVector(-350, 0, 0); //top Left
-    //particle.mass = 1.f; //KG
-    //particle.AddForce(P6::MyVector(1000, 0, 0));
-
-    //pWorld.AddParticle(&particle);
-
-    //particle2.Position = P6::MyVector(-350, 0, 0); //Top right
-    //particle2.mass = 1.f;
-    //particle2.AddForce(P6::MyVector(1000, 0, 0));
-
-    //pWorld.AddParticle(&particle2);
-    //P6::DragForceGenerator drag = P6::DragForceGenerator(0.14, 0.1);
-    //pWorld.forceRegistry.Add(&particle2, &drag);
-
-
-    //particle3.Position = P6::MyVector(-350, -300, -350); //bottom right
-    //particle3.mass = 1.f;
-    //particle3.AddForce(P6::MyVector(1000, 0, 0));
-
-    //pWorld.AddParticle(&particle3);
-
-
-    //particle4.Position = P6::MyVector(350, -150, -350); //bottom left
-    //particle4.mass = 1.f;
-    //particle4.AddForce(P6::MyVector(1000, 0, 0));
-
-    //pWorld.AddParticle(&particle4);
-
-    //RenderParticle rp1 = RenderParticle(&particle, &object, P6::MyVector(0.7f, 0.f, 0.f));
-    //RenderParticles.push_back(&rp1);
-    //RenderParticle rp2 = RenderParticle(&particle2, &object2, P6::MyVector(0.f, 0.7f, 0.f));
-    //RenderParticles.push_back(&rp2);
-    //RenderParticle rp3 = RenderParticle(&particle3, &object3, P6::MyVector(0.f, 0.f, 0.7f));
-    //RenderParticles.push_back(&rp3);
-    //RenderParticle rp4 = RenderParticle(&particle4, &object4, P6::MyVector(0.7f, 0.7f, 0.f));
-    //RenderParticles.push_back(&rp4);
 
     bool end = false;
     /* Loop until the user closes the window */
@@ -217,45 +275,23 @@ int main(void)
         glUseProgram(shader.getShaderProg());
 
 
+        if (input.getPerspective() == true) {
+            pCameraPerspective->performCamera(shader.getShaderProg());
+            //pCameraOrtho->performCamera(shader.getShaderProg());
 
-        pCameraOrtho->performCamera(shader.getShaderProg());
+        }
+        else {
+            //pCameraPerspective->performCamera(shader.getShaderProg());
 
+           pCameraOrtho->performCamera(shader.getShaderProg());
+        }
+   
         for (std::list<RenderParticle*>::iterator i = RenderParticles.begin();
             i != RenderParticles.end();
             i++
             ) {
             (*i)->Draw();
         }
-
-
-        //if (particle.Position.x == 0 && particle2.Position.x == 0 && particle3.Position.x == 0 && particle4.Position.x == 0) {
-        //    std::cout << "Blue: 1st" << '\n';
-        //    std::cout << "Mag. of Velocity: " << floor(particle3Magnitude * 100 + 0.5) / 100 << "m/s" << '\n';
-        //    std::cout << "Average Velocity: (" << -1 * floor(particle3AvgVelocity.x * 100 + 0.5) / 100 << ", " <<
-        //        floor(particle3AvgVelocity.z * 100 + 0.5) / 100 << ", " << floor(particle3AvgVelocity.y * 100 + 0.5) / 100 << ")m/s" << '\n';
-        //    std::cout << floor((particle3Time.count() / 1000.f) * 100 + 0.5) / 100 << "secs" << '\n' << '\n';
-
-        //    std::cout << "Yellow: 2nd" << '\n';
-        //    std::cout << "Mag. of Velocity: " << floor(particle4Magnitude * 100 + 0.5) / 100 << "m/s" << '\n';
-        //    std::cout << "Average Velocity: (" << -1 * floor(particle4AvgVelocity.x * 100 + 0.5) / 100 << ", " <<
-        //        floor(particle4AvgVelocity.z * 100 + 0.5) / 100 << ", " << floor(particle4AvgVelocity.y * 100 + 0.5) / 100 << ")m/s" << '\n';
-        //    std::cout << floor((particle4Time.count() / 1000.f) * 100 + 0.5) / 100 << "secs" << '\n' << '\n';
-        //    
-        //    std::cout << "Red: 3rd" << '\n';
-        //    std::cout << "Mag. of Velocity: " << floor(particleMagnitude * 100 + 0.5)/100 <<"m/s"<<'\n';
-        //    std::cout << "Average Velocity: (" << -1 * floor(particleAvgVelocity.x * 100 + 0.5)/100<<", "<<
-        //        floor(particleAvgVelocity.z * 100 + 0.5) /100 << ", " << floor(particleAvgVelocity.y * 100 + 0.5)/100 << ")m/s"<<'\n';
-        //    std::cout << floor((particleTime.count() / 1000.f) * 100+ 0.5) / 100 << "secs" << '\n' << '\n';
-
-        //    std::cout << "Green: 4th" << '\n';
-        //    std::cout << "Mag. of Velocity: " << floor(particle2Magnitude * 100 + 0.5) / 100 << "m/s" << '\n';
-        //    std::cout << "Average Velocity: (" << -1 * floor(particle2AvgVelocity.x * 100 + 0.5) / 100 << ", " <<
-        //        floor(particle2AvgVelocity.z * 100 + 0.5) / 100 << ", " << floor(particle2AvgVelocity.y * 100 + 0.5) / 100 << ")m/s" << '\n';
-        //    std::cout << floor((particle2Time.count() / 1000.f) * 100 + 0.5) / 100 << "secs" << '\n' << '\n';
-
-
-        //    end = true;
-        //}
 
         /* Swap front and back buffers */
         glfwSwapBuffers(window);

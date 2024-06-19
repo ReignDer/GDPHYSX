@@ -35,6 +35,7 @@ namespace P6 {
 
 		void UpdatePosition(float time);
 		void UpdateVelocity(float time);
+		void UpdateLifeSpan(float time);
 
 	public:
 		void Update(float time);

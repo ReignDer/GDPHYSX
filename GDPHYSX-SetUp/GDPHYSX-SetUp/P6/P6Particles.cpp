@@ -40,13 +40,18 @@ void P6::P6Particles::UpdateVelocity(float time)
 	this->Velocity = this->Velocity * powf(damping, time);
 }
 
-void P6::P6Particles::Update(float time)
+void P6::P6Particles::UpdateLifeSpan(float time)
 {
 	this->lifespan -= time;
-	if (lifespan <= 0) {
-		this->Destroy();
-		return;
-	}
+	if (lifespan > 0) return;
+	
+	this->Destroy();
+
+}
+
+void P6::P6Particles::Update(float time)
+{
+	this->UpdateLifeSpan(time);
 	this->UpdatePosition(time);
 	this->UpdateVelocity(time);
 	//Reset the forces after calculations
