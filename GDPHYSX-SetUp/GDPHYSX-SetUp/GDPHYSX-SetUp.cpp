@@ -106,7 +106,7 @@ int main(void)
     cameraOrtho->createCamera();
     cameraPerspective->createCamera();
 
-    //Initalize Physics and particle list
+    //Initialize Physics and particle list
     P6::PhysicsWorld pWorld = P6::PhysicsWorld();
     std::list<RenderParticle*> RenderParticles;
 
@@ -114,6 +114,16 @@ int main(void)
     int sparkAmount = 0;
     std::cout << "Enter Spark Amount: ";
     std::cin >> sparkAmount;
+
+    //Spawning particles one by one
+    const float spawnInterval = 100.f;
+    int maxParticles = sparkAmount;
+    int particlesSpawned = 0;
+
+    //Clock for spawn
+    using clock = std::chrono::steady_clock;
+    auto lastSpawnTime = clock::now();
+
 
     //Clock time
     using clock = std::chrono::high_resolution_clock;
@@ -128,64 +138,22 @@ int main(void)
     //Better Random Distribution
     std::random_device rd;
     std::uniform_real_distribution<float> dist(1.0f,10.0f);
-    std::uniform_real_distribution<float> distForce(10.f, 50.f);
+    std::uniform_real_distribution<float> distForce(50.f, 100.f);
 
+    //Controlling the trajectory of a particle
     //X and Y angle from 70 to 110
-    std::uniform_real_distribution<float> distAngle(70.f, 110.f);
+    std::uniform_real_distribution<float> distAngle(80.f, 110.f);
     //Z angle, full 360
     std::uniform_real_distribution<float> distAngle_2(0.f, 360.f);
 
-
-
-    for (int i = 0; i < sparkAmount; i++) {
-
-        /*------------Create New Particle-----------------*/
-        P6::P6Particles* newParticle = new P6::P6Particles();
-
-        //Set Position to the bottom
-        newParticle->Position = P6::MyVector(0, -400, 0);
-
-        //Set mass and lifespan from 1-10;
-        newParticle->mass = 0.01f;
-        newParticle->lifespan = dist(rd);
-        newParticle->lifeRemaining = newParticle->lifespan;
-
-        //Randomizing angle of trajectory and converting degrees to radians
-        float angle = distAngle(rd) * (PI / 180.f);
-        float angle_2 = distAngle_2(rd) * (PI / 180.f);
-        //Randomize velocity of particle
-        float velocity = distForce(rd);
-
-        //Add force to the sparks to create a fountain firework
-        P6::MyVector randomForce = P6::MyVector(velocity * std::cosf(angle) * std::cosf(angle_2), 
-            velocity * std::sinf(angle), velocity * std::cosf(angle) * std::sinf(angle_2));
-        newParticle->AddForce(randomForce);
-
-        //Add particles to the Physics World 
-        pWorld.AddParticle(newParticle);
-
-        /*---------------Rendering particle----------------*/
-        
-        //Randomize Color and Radius 
-        //Randomization of Color is between 0 to 1
-        P6::MyVector randomColor = P6::MyVector((float)std::rand() / RAND_MAX,
-            (float)std::rand() / RAND_MAX, (float)std::rand() / RAND_MAX);
-
-        //Randomize radius from 2-10
-        int randomRadius = 2 + (std::rand() % 10);
-        P6::MyVector randomScale = P6::MyVector(randomRadius, randomRadius, randomRadius);
-
-        //Instantiate particle
-        RenderParticle* rp = new RenderParticle(newParticle, &object, randomColor,randomScale);
-
-        //Add rendered particle in the list
-        RenderParticles.push_back(rp);
-    }
 
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
     {
         //Start Clock
+        auto currentTime = clock::now();
+        auto elapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - lastSpawnTime);
+
         curr_time = clock::now();
 
         auto dur = std::chrono::duration_cast<std::chrono::nanoseconds>(curr_time - prev_time);
@@ -229,7 +197,55 @@ int main(void)
 
            pCameraOrtho->performCamera(shader.getShaderProg(), window);
         }
-   
+        
+        //Spawn particles one by one
+        if (particlesSpawned < maxParticles && elapsedTime.count() >= spawnInterval && !input.getSpace()) {
+
+            /*------------Create New Particle-----------------*/
+            P6::P6Particles* newParticle = new P6::P6Particles();
+
+            //Set Position to the bottom
+            newParticle->Position = P6::MyVector(0, -380, 0);
+
+            //Set mass and lifespan from 1-10;
+            newParticle->mass = 0.01f;
+            newParticle->lifespan = dist(rd);
+            newParticle->lifeRemaining = newParticle->lifespan;
+
+            //Randomizing angle of trajectory and converting degrees to radians
+            float angle = distAngle(rd) * (PI / 180.f);
+            float angle_2 = distAngle_2(rd) * (PI / 180.f);
+            //Randomize velocity of particle
+            float velocity = distForce(rd);
+
+            //Add force to the sparks to create a fountain firework
+            P6::MyVector randomForce = P6::MyVector(velocity * std::cosf(angle) * std::cosf(angle_2),
+               velocity * std::sinf(angle), velocity * std::cosf(angle) * std::sinf(angle_2));
+            newParticle->AddForce(randomForce);
+
+            //Add particles to the Physics World 
+            pWorld.AddParticle(newParticle);
+
+            /*---------------Rendering particle----------------*/
+
+            //Randomize Color and Radius 
+            //Randomization of Color is between 0 to 1
+            P6::MyVector randomColor = P6::MyVector((float)std::rand() / RAND_MAX,
+                (float)std::rand() / RAND_MAX, (float)std::rand() / RAND_MAX);
+
+            //Randomize radius from 2-10
+            int randomRadius = 2 + (std::rand() % 10);
+            P6::MyVector randomScale = P6::MyVector(randomRadius, randomRadius, randomRadius);
+
+            //Instantiate particle
+            RenderParticle* rp = new RenderParticle(newParticle, &object, randomColor, randomScale);
+
+            //Add rendered particle in the list
+            RenderParticles.push_back(rp);
+            particlesSpawned++;
+            lastSpawnTime = currentTime;
+        }
+
         //Rendering Particles
         for (std::list<RenderParticle*>::iterator i = RenderParticles.begin();
             i != RenderParticles.end();
