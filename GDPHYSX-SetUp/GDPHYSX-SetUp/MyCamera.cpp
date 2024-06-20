@@ -1,10 +1,11 @@
 #include "MyCamera.h"
 
-MyCamera::MyCamera() {}
+MyCamera::MyCamera() {
+	this->cameraPos = glm::vec3(0.f, 0.f, 3.f);
+}
 
 //Create the initial camera position
 void MyCamera::createCameraPos() {
-	this->cameraPos = glm::vec3(0.f, 0.f, 3.f);
 
 	//Construct the Position Matrix
 

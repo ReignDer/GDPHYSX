@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <GLFW/glfw3.h>
+
 class Input
 {
 private:
@@ -13,24 +14,28 @@ private:
 	bool perspective;
 public:
 	Input();
+	//Process Inputs
     static void Key_Callback(GLFWwindow* window, // the pointer to the window
         int key, // the keycode being pressed
         int scancode, // Physical position of the press on keyboard
         int action, // Either Press / Release
         int mods);
+	//Getters
 	bool getSpace();
-	void setSpace(bool pressed);
 	bool getUp();
-	void setUp(bool pressed);
 	bool getDown();
-	void setDown(bool pressed);
 	bool getLeft();
-	void setLeft(bool pressed);
 	bool getRight();
-	void setRight(bool pressed);
 	bool getOrtho();
-	void setOrtho(bool pressed);
 	bool getPerspective();
+
+	//Setters
+	void setSpace(bool pressed);
+	void setUp(bool pressed);
+	void setDown(bool pressed);
+	void setLeft(bool pressed);
+	void setRight(bool pressed);
+	void setOrtho(bool pressed);
 	void setPerspective(bool pressed);
 
 };

@@ -20,10 +20,9 @@ void Input::Key_Callback(GLFWwindow* window, // the pointer to the window
     Input* input = static_cast<Input*>(glfwGetWindowUserPointer(window));
 
     if (!input) {
-        std::cout << "Faile";
+        std::cout << "Failed";
     }
-    //Flags for player movement
-    //Down
+    //Process key inputs
     switch (action)
     {
     case GLFW_PRESS:
@@ -41,7 +40,10 @@ void Input::Key_Callback(GLFWwindow* window, // the pointer to the window
             input->setRight(true);
             break;
         case GLFW_KEY_SPACE:
-            input->setSpace(true);
+            if (input->getSpace() != true)
+                input->setSpace(true);
+            else
+                input->setSpace(false);
             break;
         case GLFW_KEY_1:
             input->setPerspective(false);
@@ -67,13 +69,13 @@ void Input::Key_Callback(GLFWwindow* window, // the pointer to the window
         case GLFW_KEY_D:
             input->setRight(false);
             break;
-        case GLFW_KEY_SPACE:
-            input->setSpace(false);
-            break;
         }
         break;
     }
 }
+
+
+//Getters and setters
 
 bool Input::getSpace()
 {

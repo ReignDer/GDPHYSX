@@ -234,8 +234,10 @@ int main(void)
         /*---------------Rendering particle----------------*/
         
         //Randomize Color and Radius 
+        //Randomization of Color is between 0 to 1
         P6::MyVector randomColor = P6::MyVector((float)std::rand() / RAND_MAX,
             (float)std::rand() / RAND_MAX, (float)std::rand() / RAND_MAX);
+        //Randomize radius from 2-10
         int randomRadius = 2 + (std::rand() % 10);
         P6::MyVector randomScale = P6::MyVector(randomRadius, randomRadius, randomRadius);
         RenderParticle* rp = new RenderParticle(newParticle, &object, randomColor,randomScale);
@@ -260,7 +262,10 @@ int main(void)
             curr_ns -= curr_ns;
 
             //std::cout << "P6 Update\n";
-            pWorld.Update((float)ms.count() / 1000);
+
+            //Pause Physics World
+            if(!input.getSpace())   
+                pWorld.Update((float)ms.count() / 1000);
 
             //std::cout << "Normal Update\n";
         }
@@ -274,18 +279,19 @@ int main(void)
 
         glUseProgram(shader.getShaderProg());
 
-
+        //Toggle between Perspective and Orthographic
+        //Orthographic is default view
+        //Press 1 for Orthographic and Press 2 for Perspective
         if (input.getPerspective() == true) {
-            pCameraPerspective->performCamera(shader.getShaderProg());
-            //pCameraOrtho->performCamera(shader.getShaderProg());
+            pCameraPerspective->performCamera(shader.getShaderProg(), window);
 
         }
         else {
-            //pCameraPerspective->performCamera(shader.getShaderProg());
 
-           pCameraOrtho->performCamera(shader.getShaderProg());
+           pCameraOrtho->performCamera(shader.getShaderProg(), window);
         }
    
+        //Rendering Particles
         for (std::list<RenderParticle*>::iterator i = RenderParticles.begin();
             i != RenderParticles.end();
             i++

@@ -6,7 +6,9 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include "Input.h"
 
+#define PI 3.14159
 
 class PerspectiveCamera : public MyCamera
 {
@@ -18,14 +20,16 @@ public:
     PerspectiveCamera(float window_height, float window_width);
 
 public:
-    //Create Perpective Projection
+    //Create Perspective Projection
     void createProjection();
 
     void updateZfarView();
+
+    void MoveCamera(float speed);
 private:
     //Update camera's position
     //Source::learnopengl.com/Getting-started/Camera
-    void updateCameraPos();
+    void updateCameraPos(GLFWwindow* window);
 
     ////Update camera's orientation
     ////Source::learnopengl.com/Getting-started/Camera
@@ -42,15 +46,15 @@ private:
 
     //}
 
-    //Update view withh lookAt function
+    //Update view with lookAt function
     //Source::learnopengl.com/Getting-started/Camera
     void updateViewMatrix();
 
     //Update function that performs all updates
-    void update();
+    void update(GLFWwindow* window);
 public:
     //Perform Camera
-    void performCamera(GLuint shaderProg);
+    void performCamera(GLuint shaderProg, GLFWwindow* window);
 
 };
 

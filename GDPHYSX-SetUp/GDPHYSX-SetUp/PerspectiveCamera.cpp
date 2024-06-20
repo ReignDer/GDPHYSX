@@ -5,6 +5,8 @@
  PerspectiveCamera::PerspectiveCamera(float window_height, float window_width) : MyCamera() {
     this->window_height = window_height;
     this->window_width = window_width;
+    this->cameraPos = glm::vec3(0, 0.f, 500.f);
+
 }
 
 //Create Perspective Projection
@@ -28,22 +30,35 @@ void PerspectiveCamera::updateZfarView() {
     );
 }
 
+
+
 //Update camera's position
 //Source::learnopengl.com/Getting-started/Camera
 
-void PerspectiveCamera::updateCameraPos() {
-    this->cameraPos = glm::vec3(0, 0.f, 500.f);
-    /*float speed = 0.005f;*/
+void PerspectiveCamera::updateCameraPos(GLFWwindow* window) {
+    float speed = 0.05f;
+    float radius = 500.f;
 
-    ////camera movement
-    //if (up)
-    //    this->cameraPos += speed * this->F;
-    //if (down)
-    //    this->cameraPos -= speed * this->F;
-    //if (left)
-    //    this->cameraPos -= glm::normalize(glm::cross(this->F, this->U)) * speed;
-    //if (right)
-    //    this->cameraPos += glm::normalize(glm::cross(this->F, this->U)) * speed;
+    Input* input = static_cast<Input*>(glfwGetWindowUserPointer(window));
+    
+    //camera movement
+    if (input->getUp()) {
+        angleY += 0.01f;
+        if (angleY > glm::radians(89.0f)) angleY = glm::radians(89.0f);
+        //this->cameraPos += speed * this->F;
+    }
+    if (input->getDown()) {
+        angleY -= 0.01f;
+        if (angleY < glm::radians(-89.0f)) angleY = glm::radians(-89.0f);
+    }
+        //this->cameraPos -= speed * this->F;
+    if (input->getLeft()) {
+        angleX += 0.01f;
+        //this->cameraPos -= glm::normalize(glm::cross(this->F, this->U)) * speed;
+    }
+    if (input->getRight())
+        angleX -= 0.01f;
+        //this->cameraPos += glm::normalize(glm::cross(this->F, this->U)) * speed;
     //if (ascend)
     //    this->cameraPos += speed * this->U;
     //if (descend)
@@ -51,6 +66,16 @@ void PerspectiveCamera::updateCameraPos() {
     //if (this->cameraPos.y > 5) {
     //    this->cameraPos.y = 5;
     //}
+
+
+    //Rotate Camera
+    this->cameraPos.x = radius * std::sin(angleX) * std::cos(angleY);
+    this->cameraPos.y = radius * std::sin(angleY);
+    this->cameraPos.z = radius * std::cos(angleY) * std::cos(angleX);
+
+    //Target
+    this->F = glm::normalize(glm::vec3(0, 0, 0) - this->cameraPos);
+
     this->cameraPositionMatrix =
         glm::translate(glm::mat4(1.0f), //Initialize it as an Identity Matrix
             this->cameraPos * -1.f); //Multiply to -1 since we need -P
@@ -65,17 +90,18 @@ void PerspectiveCamera::updateViewMatrix() {
     this->viewMatrix = glm::lookAt(this->cameraPos, this->cameraPos + this->F, this->U);
 }
 
+
 //Update function that performs all updates
 
-void PerspectiveCamera::update() {
-    this->updateCameraPos();
+void PerspectiveCamera::update(GLFWwindow* window) {
+    this->updateCameraPos(window);
     //this->updateCameraOrientation();
     this->updateViewMatrix();
 }
 
 //Perform Camera
 
-void PerspectiveCamera::performCamera(GLuint shaderProg) {
-    this->update();
+void PerspectiveCamera::performCamera(GLuint shaderProg, GLFWwindow* window) {
+    this->update(window);
     this->render(shaderProg);
 }

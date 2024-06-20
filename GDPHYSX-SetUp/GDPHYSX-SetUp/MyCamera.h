@@ -32,6 +32,10 @@ class MyCamera
 	    //Window height and width
 	    float window_height;
 	    float window_width;
+
+		//Perspective
+		float angleX = 0.f;
+		float angleY = 0.f;
 	
 	    //Default Constructor
 	public:
