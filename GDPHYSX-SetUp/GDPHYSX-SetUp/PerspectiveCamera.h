@@ -23,28 +23,14 @@ public:
     //Create Perspective Projection
     void createProjection();
 
+    //Not used
     void updateZfarView();
 
-    void MoveCamera(float speed);
 private:
     //Update camera's position
     //Source::learnopengl.com/Getting-started/Camera
     void updateCameraPos(GLFWwindow* window);
 
-    ////Update camera's orientation
-    ////Source::learnopengl.com/Getting-started/Camera
-    //void updateCameraOrientation() {
-
-    //    //Orientation of x,y,z
-    //    this->direction.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
-    //    this->direction.y = sin(glm::radians(pitch));
-    //    this->direction.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
-
-    //    //Normalize F
-    //    this->F = glm::normalize(this->direction);
-
-
-    //}
 
     //Update view with lookAt function
     //Source::learnopengl.com/Getting-started/Camera

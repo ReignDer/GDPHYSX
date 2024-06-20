@@ -11,12 +11,14 @@ Input::Input()
     this->perspective = false;
 }
 
+//Process Inputs
 void Input::Key_Callback(GLFWwindow* window, // the pointer to the window
     int key, // the keycode being pressed
     int scancode, // Physical position of the press on keyboard
     int action, // Either Press / Release
     int mods) //Which modifier keys is held down
 {
+    //Refer window to input in main
     Input* input = static_cast<Input*>(glfwGetWindowUserPointer(window));
 
     if (!input) {
@@ -25,6 +27,7 @@ void Input::Key_Callback(GLFWwindow* window, // the pointer to the window
     //Process key inputs
     switch (action)
     {
+    //Key Pressed
     case GLFW_PRESS:
         switch (key) {
         case GLFW_KEY_S:
@@ -55,6 +58,7 @@ void Input::Key_Callback(GLFWwindow* window, // the pointer to the window
             break;
         }
         break;
+    //Key Released
     case GLFW_RELEASE:
         switch(key){
         case GLFW_KEY_S:

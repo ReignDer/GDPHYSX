@@ -21,6 +21,7 @@ void PerspectiveCamera::createProjection() {
 
 }
 
+//Not used
 void PerspectiveCamera::updateZfarView() {
     this->projectionMatrix = glm::perspective(
         glm::radians(90.f), //FOV

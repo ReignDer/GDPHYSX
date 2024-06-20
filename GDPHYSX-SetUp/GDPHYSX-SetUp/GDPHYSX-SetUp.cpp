@@ -31,82 +31,6 @@ using namespace std::chrono_literals;
 
 constexpr std::chrono::nanoseconds timestep(16ms);
 
-//void Key_Callback(GLFWwindow* window, // the pointer to the window
-//    int key, // the keycode being pressed
-//    int scancode, // Physical position of the press on keyboard
-//    int action, // Either Press / Release
-//    int mods) //Which modifier keys is held down
-//{
-//    //Flags for player movement
-//    //Down
-//    if (key == GLFW_KEY_S) {
-//        if (action == GLFW_PRESS)
-//            down = true;
-//        else if (action == GLFW_RELEASE)
-//            down = false;
-//    }
-//    //Up
-//    if (key == GLFW_KEY_W) {
-//        if (action == GLFW_PRESS)
-//            up = true;
-//        else if (action == GLFW_RELEASE)
-//            up = false;
-//    }
-//
-//    //Left
-//    if (key == GLFW_KEY_A) {
-//        if (action == GLFW_PRESS)
-//            left = true;
-//        else if (action == GLFW_RELEASE)
-//            left = false;
-//    }
-//
-//    //Right
-//    if (key == GLFW_KEY_D) {
-//        if (action == GLFW_PRESS)
-//            right = true;
-//        else if (action == GLFW_RELEASE)
-//            right = false;
-//    }
-//
-//    //Flags for spawning objects
-//    if (key == GLFW_KEY_SPACE && action == GLFW_PRESS)
-//        spawn = true;
-//    else if (key == GLFW_KEY_SPACE && action == GLFW_RELEASE)
-//        spawn = false;
-//
-//    if (key == GLFW_KEY_ESCAPE)
-//        escape = true;
-//
-//}
-////Call Mouse
-////Source::learnopengl.com/Getting-started/Camera
-//void mouse_callback(GLFWwindow* window, double xpos, double ypos)
-//{
-//    if (firstMouse)
-//    {
-//        lastX = xpos;
-//        lastY = ypos;
-//        firstMouse = false;
-//    }
-//
-//    float xoffset = xpos - lastX;
-//    float yoffset = lastY - ypos;
-//    lastX = xpos;
-//    lastY = ypos;
-//
-//    float sensitivity = 0.1f;
-//    xoffset *= sensitivity;
-//    yoffset *= sensitivity;
-//
-//    yaw += xoffset;
-//    pitch += yoffset;
-//
-//    if (pitch > 89.0f)
-//        pitch = 89.0f;
-//    if (pitch < -89.0f)
-//        pitch = -89.0f;
-//}
 int main(void)
 {
 
@@ -148,10 +72,13 @@ int main(void)
     float window_width = 800;
     float window_height = 800;
 
-    //Instantiate Camera
+    /*-----------------Instantiate Camera---------------------*/
+
+    //Orthographic
     MyCamera* cameraOrtho = new OrthoCamera(window_height, window_width);
     OrthoCamera* pCameraOrtho = (OrthoCamera*)cameraOrtho;
 
+    //Perspective
     MyCamera* cameraPerspective = new PerspectiveCamera(window_height, window_width);
     PerspectiveCamera* pCameraPerspective = (PerspectiveCamera*)cameraPerspective;
 
@@ -159,29 +86,27 @@ int main(void)
     glfwMakeContextCurrent(window);
     gladLoadGL();
 
+    //Instantiate inputs
     Input input;
-    glfwSetWindowUserPointer(window, &input);
-    //Keyboard and Mouse inputs
-    glfwSetKeyCallback(window, Input::Key_Callback);
-    //glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-    //glfwSetCursorPosCallback(window, mouse_callback);
 
+    //Refers window to input
+    glfwSetWindowUserPointer(window, &input);
+    //Keyboard
+    glfwSetKeyCallback(window, Input::Key_Callback);
+
+    //Instantiate shares and create the model
     Shader shader(v, f);
 
+    //Texture, OBJ
     Model3D object("3D/white.jpg", "3D/sphere.obj");
     object.setShaders(shader.getShaderProg());
     object.createModel();
-
-    Model3D object2 = object;
-
-    Model3D object3 = object;
-
-    Model3D object4 = object;
     
     //Initialize Camera
     cameraOrtho->createCamera();
     cameraPerspective->createCamera();
 
+    //Initalize Physics and particle list
     P6::PhysicsWorld pWorld = P6::PhysicsWorld();
     std::list<RenderParticle*> RenderParticles;
 
@@ -190,6 +115,7 @@ int main(void)
     std::cout << "Enter Spark Amount: ";
     std::cin >> sparkAmount;
 
+    //Clock time
     using clock = std::chrono::high_resolution_clock;
     auto start_time = clock::now();
 
@@ -204,7 +130,9 @@ int main(void)
     std::uniform_real_distribution<float> dist(1.0f,10.0f);
     std::uniform_real_distribution<float> distForce(10.f, 50.f);
 
+    //X and Y angle from 70 to 110
     std::uniform_real_distribution<float> distAngle(70.f, 110.f);
+    //Z angle, full 360
     std::uniform_real_distribution<float> distAngle_2(0.f, 360.f);
 
 
@@ -222,12 +150,17 @@ int main(void)
         newParticle->lifespan = dist(rd);
         newParticle->lifeRemaining = newParticle->lifespan;
 
+        //Randomizing angle of trajectory and converting degrees to radians
         float angle = distAngle(rd) * (PI / 180.f);
         float angle_2 = distAngle_2(rd) * (PI / 180.f);
+        //Randomize velocity of particle
         float velocity = distForce(rd);
+
         //Add force to the sparks to create a fountain firework
-        P6::MyVector randomForce = P6::MyVector(velocity * std::cosf(angle) * std::cosf(angle_2), velocity * std::sinf(angle), velocity * std::cosf(angle) * std::sinf(angle_2));
+        P6::MyVector randomForce = P6::MyVector(velocity * std::cosf(angle) * std::cosf(angle_2), 
+            velocity * std::sinf(angle), velocity * std::cosf(angle) * std::sinf(angle_2));
         newParticle->AddForce(randomForce);
+
         //Add particles to the Physics World 
         pWorld.AddParticle(newParticle);
 
@@ -237,17 +170,22 @@ int main(void)
         //Randomization of Color is between 0 to 1
         P6::MyVector randomColor = P6::MyVector((float)std::rand() / RAND_MAX,
             (float)std::rand() / RAND_MAX, (float)std::rand() / RAND_MAX);
+
         //Randomize radius from 2-10
         int randomRadius = 2 + (std::rand() % 10);
         P6::MyVector randomScale = P6::MyVector(randomRadius, randomRadius, randomRadius);
+
+        //Instantiate particle
         RenderParticle* rp = new RenderParticle(newParticle, &object, randomColor,randomScale);
+
+        //Add rendered particle in the list
         RenderParticles.push_back(rp);
     }
 
-    bool end = false;
     /* Loop until the user closes the window */
-    while (!glfwWindowShouldClose(window) && !end)
+    while (!glfwWindowShouldClose(window))
     {
+        //Start Clock
         curr_time = clock::now();
 
         auto dur = std::chrono::duration_cast<std::chrono::nanoseconds>(curr_time - prev_time);
@@ -255,6 +193,7 @@ int main(void)
 
         curr_ns += dur;
 
+        //Update per frame
         if (curr_ns >= timestep) {
             auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(curr_ns);
             //std::cout << "MS: " << (float)ms.count() << '\n';
@@ -280,7 +219,7 @@ int main(void)
         glUseProgram(shader.getShaderProg());
 
         //Toggle between Perspective and Orthographic
-        //Orthographic is default view
+        //Orthographic is the default view
         //Press 1 for Orthographic and Press 2 for Perspective
         if (input.getPerspective() == true) {
             pCameraPerspective->performCamera(shader.getShaderProg(), window);

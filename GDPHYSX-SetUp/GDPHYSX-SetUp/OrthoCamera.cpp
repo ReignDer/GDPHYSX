@@ -35,16 +35,13 @@ void OrthoCamera::updateCameraPos(GLFWwindow* window) {
 	if (input->getUp()) {
 		angleY += 0.01f;
 		if (angleY > glm::radians(89.0f)) angleY = glm::radians(89.0f);
-		//this->cameraPos += speed * this->F;
 	}
 	if (input->getDown()) {
 		angleY -= 0.01f;
 		if (angleY < glm::radians(-89.0f)) angleY = glm::radians(-89.0f);
 	}
-	//this->cameraPos -= speed * this->F;
 	if (input->getLeft()) {
 		angleX += 0.01f;
-		//this->cameraPos -= glm::normalize(glm::cross(this->F, this->U)) * speed;
 	}
 	if (input->getRight())
 		angleX -= 0.01f;

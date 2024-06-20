@@ -1,2 +1,13 @@
-﻿  OrthoCamera.cpp
+﻿  GDPHYSX-SetUp.cpp
+C:\Users\Mathieu Marc Pobre\Documents\GitHub\GDPHYSX\GDPHYSX-SetUp\GDPHYSX-SetUp\P6\GravityForceGenerator.h(12,35): warning C4305: 'argument': truncation from 'double' to 'const float'
+  (compiling source file 'GDPHYSX-SetUp.cpp')
+  
+C:\Users\Mathieu Marc Pobre\Documents\GitHub\GDPHYSX\GDPHYSX-SetUp\GDPHYSX-SetUp\P6\PhysicsWorld.h(23,70): warning C4305: 'argument': truncation from 'double' to 'const float'
+  (compiling source file 'GDPHYSX-SetUp.cpp')
+  
+C:\Users\Mathieu Marc Pobre\Documents\GitHub\GDPHYSX\GDPHYSX-SetUp\GDPHYSX-SetUp\GDPHYSX-SetUp.cpp(154,21): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\Mathieu Marc Pobre\Documents\GitHub\GDPHYSX\GDPHYSX-SetUp\GDPHYSX-SetUp\GDPHYSX-SetUp.cpp(155,23): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\Mathieu Marc Pobre\Documents\GitHub\GDPHYSX\GDPHYSX-SetUp\GDPHYSX-SetUp\GDPHYSX-SetUp.cpp(176,77): warning C4244: 'argument': conversion from 'int' to 'const float', possible loss of data
+C:\Users\Mathieu Marc Pobre\Documents\GitHub\GDPHYSX\GDPHYSX-SetUp\GDPHYSX-SetUp\GDPHYSX-SetUp.cpp(176,63): warning C4244: 'argument': conversion from 'int' to 'const float', possible loss of data
+C:\Users\Mathieu Marc Pobre\Documents\GitHub\GDPHYSX\GDPHYSX-SetUp\GDPHYSX-SetUp\GDPHYSX-SetUp.cpp(176,49): warning C4244: 'argument': conversion from 'int' to 'const float', possible loss of data
   GDPHYSX-SetUp.vcxproj -> C:\Users\Mathieu Marc Pobre\Documents\GitHub\GDPHYSX\GDPHYSX-SetUp\x64\Debug\GDPHYSX-SetUp.exe
