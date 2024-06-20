@@ -33,18 +33,18 @@ void OrthoCamera::updateCameraPos(GLFWwindow* window) {
 
 	//camera movement
 	if (input->getUp()) {
-		angleY += 0.01f;
+		angleY += 0.001f;
 		if (angleY > glm::radians(89.0f)) angleY = glm::radians(89.0f);
 	}
 	if (input->getDown()) {
-		angleY -= 0.01f;
+		angleY -= 0.001f;
 		if (angleY < glm::radians(-89.0f)) angleY = glm::radians(-89.0f);
 	}
 	if (input->getLeft()) {
-		angleX += 0.01f;
+		angleX += 0.001f;
 	}
 	if (input->getRight())
-		angleX -= 0.01f;
+		angleX -= 0.001f;
 
 
 	//Rotate Camera

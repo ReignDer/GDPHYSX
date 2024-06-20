@@ -150,10 +150,11 @@ int main(void)
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
     {
-        //Start Clock
+        //Start Clock for spawning
         auto currentTime = clock::now();
         auto elapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - lastSpawnTime);
 
+        //Start Clock for frame updates
         curr_time = clock::now();
 
         auto dur = std::chrono::duration_cast<std::chrono::nanoseconds>(curr_time - prev_time);
@@ -189,7 +190,7 @@ int main(void)
         //Toggle between Perspective and Orthographic
         //Orthographic is the default view
         //Press 1 for Orthographic and Press 2 for Perspective
-        if (input.getPerspective() == true) {
+        if (input.getPerspective()) {
             pCameraPerspective->performCamera(shader.getShaderProg(), window);
 
         }

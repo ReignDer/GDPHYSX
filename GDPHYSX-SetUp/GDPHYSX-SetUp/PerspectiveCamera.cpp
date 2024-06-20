@@ -37,28 +37,27 @@ void PerspectiveCamera::updateZfarView() {
 //Source::learnopengl.com/Getting-started/Camera
 
 void PerspectiveCamera::updateCameraPos(GLFWwindow* window) {
-    float speed = 0.05f;
     float radius = 500.f;
 
     Input* input = static_cast<Input*>(glfwGetWindowUserPointer(window));
     
     //camera movement
     if (input->getUp()) {
-        angleY += 0.01f;
+        angleY += 0.001f;
         if (angleY > glm::radians(89.0f)) angleY = glm::radians(89.0f);
         //this->cameraPos += speed * this->F;
     }
     if (input->getDown()) {
-        angleY -= 0.01f;
+        angleY -= 0.001f;
         if (angleY < glm::radians(-89.0f)) angleY = glm::radians(-89.0f);
     }
         //this->cameraPos -= speed * this->F;
     if (input->getLeft()) {
-        angleX += 0.01f;
+        angleX += 0.001f;
         //this->cameraPos -= glm::normalize(glm::cross(this->F, this->U)) * speed;
     }
     if (input->getRight())
-        angleX -= 0.01f;
+        angleX -= 0.001f;
         //this->cameraPos += glm::normalize(glm::cross(this->F, this->U)) * speed;
     //if (ascend)
     //    this->cameraPos += speed * this->U;
