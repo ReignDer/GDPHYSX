@@ -4,6 +4,7 @@ void P6::PhysicsWorld::AddParticle(P6Particles* toAdd)
 {
 	Particles.push_back(toAdd);
 
+	//More forces
 	forceRegistry.Add(toAdd, &Gravity);
 }
 

@@ -29,6 +29,7 @@ void OrthoCamera::updateCameraPos(GLFWwindow* window) {
 
 	float radius = 500.f;
 
+	//Refer window to input
 	Input* input = static_cast<Input*>(glfwGetWindowUserPointer(window));
 
 	//camera movement
@@ -54,7 +55,7 @@ void OrthoCamera::updateCameraPos(GLFWwindow* window) {
 
 	//Construct the Position Matrix
 	this->cameraPositionMatrix =
-		glm::translate(glm::mat4(1.0f), //Intialize it as an Identity Matrix
+		glm::translate(glm::mat4(1.0f), //Initialize it as an Identity Matrix
 			this->cameraPos * -1.f); //Multiply to -1 since we need -P
 
 	//Get Forward
@@ -75,7 +76,7 @@ void OrthoCamera::update(GLFWwindow* window) {
 	this->updateViewMatrix();
 }
 
-//Perfrom camera
+//Perform camera
 void OrthoCamera::performCamera(GLuint shaderProg, GLFWwindow* window) {
 	this->update(window);
 	this->render(shaderProg);

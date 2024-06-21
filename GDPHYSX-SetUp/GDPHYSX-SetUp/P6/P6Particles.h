@@ -22,6 +22,8 @@ namespace P6 {
 		float mass = 0;
 		float damping = 0.9f;
 		float lifespan = 1.f;
+
+		//not used
 		float lifeRemaining = 0.f;
 
 		MyVector Position;

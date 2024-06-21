@@ -25,6 +25,8 @@ P6::P6Particles::P6Particles()
 	this->Position = MyVector();
 	this->mass = 0;
 	this->lifespan = 1.f;
+
+	//not used
 	this->lifeRemaining = 0.f;
 }
 

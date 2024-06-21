@@ -1,8 +1,31 @@
-﻿  OrthoCamera.cpp
-  PerspectiveCamera.cpp
+﻿  GDPHYSX-SetUp.cpp
+C:\Users\Mathieu Marc Pobre\Documents\GitHub\GDPHYSX\GDPHYSX-SetUp\GDPHYSX-SetUp\P6\GravityForceGenerator.h(12,35): warning C4305: 'argument': truncation from 'double' to 'const float'
+  (compiling source file 'GDPHYSX-SetUp.cpp')
+  
+C:\Users\Mathieu Marc Pobre\Documents\GitHub\GDPHYSX\GDPHYSX-SetUp\GDPHYSX-SetUp\P6\PhysicsWorld.h(23,70): warning C4305: 'argument': truncation from 'double' to 'const float'
+  (compiling source file 'GDPHYSX-SetUp.cpp')
+  
+C:\Users\Mathieu Marc Pobre\Documents\GitHub\GDPHYSX\GDPHYSX-SetUp\GDPHYSX-SetUp\GDPHYSX-SetUp.cpp(216,25): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\Mathieu Marc Pobre\Documents\GitHub\GDPHYSX\GDPHYSX-SetUp\GDPHYSX-SetUp\GDPHYSX-SetUp.cpp(217,27): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\Mathieu Marc Pobre\Documents\GitHub\GDPHYSX\GDPHYSX-SetUp\GDPHYSX-SetUp\GDPHYSX-SetUp.cpp(238,81): warning C4244: 'argument': conversion from 'int' to 'const float', possible loss of data
+C:\Users\Mathieu Marc Pobre\Documents\GitHub\GDPHYSX\GDPHYSX-SetUp\GDPHYSX-SetUp\GDPHYSX-SetUp.cpp(238,67): warning C4244: 'argument': conversion from 'int' to 'const float', possible loss of data
+C:\Users\Mathieu Marc Pobre\Documents\GitHub\GDPHYSX\GDPHYSX-SetUp\GDPHYSX-SetUp\GDPHYSX-SetUp.cpp(238,53): warning C4244: 'argument': conversion from 'int' to 'const float', possible loss of data
+  OrthoCamera.cpp
+  DragForceGenerator.cpp
+  ForceGenerator.cpp
+  ForceRegistry.cpp
+  GravityForceGenerator.cpp
+C:\Users\Mathieu Marc Pobre\Documents\GitHub\GDPHYSX\GDPHYSX-SetUp\GDPHYSX-SetUp\P6\GravityForceGenerator.h(12,35): warning C4305: 'argument': truncation from 'double' to 'const float'
+  (compiling source file 'P6/GravityForceGenerator.cpp')
+  
+  P6Particles.cpp
+  PhysicsWorld.cpp
+C:\Users\Mathieu Marc Pobre\Documents\GitHub\GDPHYSX\GDPHYSX-SetUp\GDPHYSX-SetUp\P6\GravityForceGenerator.h(12,35): warning C4305: 'argument': truncation from 'double' to 'const float'
+  (compiling source file 'P6/PhysicsWorld.cpp')
+  
+C:\Users\Mathieu Marc Pobre\Documents\GitHub\GDPHYSX\GDPHYSX-SetUp\GDPHYSX-SetUp\P6\PhysicsWorld.h(23,70): warning C4305: 'argument': truncation from 'double' to 'const float'
+  (compiling source file 'P6/PhysicsWorld.cpp')
+  
+  RenderParticle.cpp
   Generating Code...
-  LINK : C:\Users\Mathieu Marc Pobre\Documents\GitHub\GDPHYSX\GDPHYSX-SetUp\x64\Debug\GDPHYSX-SetUp.exe not found or not built by the last incremental link; performing full link
-glad.obj : warning LNK4099: PDB '' was not found with 'glad.obj' or at ''; linking object as if no debug info
-Shader.obj : warning LNK4099: PDB '' was not found with 'Shader.obj' or at ''; linking object as if no debug info
-LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
   GDPHYSX-SetUp.vcxproj -> C:\Users\Mathieu Marc Pobre\Documents\GitHub\GDPHYSX\GDPHYSX-SetUp\x64\Debug\GDPHYSX-SetUp.exe

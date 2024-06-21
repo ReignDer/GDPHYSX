@@ -63,7 +63,7 @@ int main(void)
         return -1;
 
     /* Create a windowed mode window and its OpenGL context */
-    window = glfwCreateWindow(800, 800, "PC01 Mathieu Marc I. Pobre", NULL, NULL);
+    window = glfwCreateWindow(800, 800, "ReignEngine", NULL, NULL);
     if (!window)
     {
         glfwTerminate();
@@ -86,7 +86,7 @@ int main(void)
     glfwMakeContextCurrent(window);
     gladLoadGL();
 
-    //Instantiate inputs
+    /*-----------------Instantiate inputs--------------------*/
     Input input;
 
     //Refers window to input
@@ -94,7 +94,7 @@ int main(void)
     //Keyboard
     glfwSetKeyCallback(window, Input::Key_Callback);
 
-    //Instantiate shares and create the model
+    /*----------------Instantiate shares and create the model---------------*/
     Shader shader(v, f);
 
     //Texture, OBJ
@@ -102,11 +102,11 @@ int main(void)
     object.setShaders(shader.getShaderProg());
     object.createModel();
     
-    //Initialize Camera
+    /*----------------Initialize Camera------------------*/
     cameraOrtho->createCamera();
     cameraPerspective->createCamera();
 
-    //Initialize Physics and particle list
+    /*----------------Initialize Physics and particle list----------------*/
     P6::PhysicsWorld pWorld = P6::PhysicsWorld();
     std::list<RenderParticle*> RenderParticles;
 
@@ -116,7 +116,7 @@ int main(void)
     std::cin >> sparkAmount;
 
     //Spawning particles one by one
-    const float spawnInterval = 100.f;
+    const float spawnInterval = 100.f; //In milliseconds
     int maxParticles = sparkAmount;
     int particlesSpawned = 0;
 
@@ -137,8 +137,8 @@ int main(void)
     
     //Better Random Distribution
     std::random_device rd;
-    std::uniform_real_distribution<float> dist(1.0f,10.0f);
-    std::uniform_real_distribution<float> distForce(50.f, 100.f);
+    std::uniform_real_distribution<float> dist(1.0f,10.0f); //LifeSpan Range from 1-10
+    std::uniform_real_distribution<float> distForce(50.f, 100.f); //Force Range from 50-100
 
     //Controlling the trajectory of a particle
     //X and Y angle from 70 to 110
@@ -171,7 +171,7 @@ int main(void)
 
             //std::cout << "P6 Update\n";
 
-            //Pause Physics World
+            //Press Space to Pause Physics World
             if(!input.getSpace())   
                 pWorld.Update((float)ms.count() / 1000);
 
@@ -199,7 +199,7 @@ int main(void)
            pCameraOrtho->performCamera(shader.getShaderProg(), window);
         }
         
-        //Spawn particles one by one
+        //Spawn particles one by one and pause spawning when space is pressed
         if (particlesSpawned < maxParticles && elapsedTime.count() >= spawnInterval && !input.getSpace()) {
 
             /*------------Create New Particle-----------------*/
@@ -208,10 +208,9 @@ int main(void)
             //Set Position to the bottom
             newParticle->Position = P6::MyVector(0, -380, 0);
 
-            //Set mass and lifespan from 1-10;
+            //Set mass and randomize lifespan from 1-10 second/s;
             newParticle->mass = 0.01f;
             newParticle->lifespan = dist(rd);
-            newParticle->lifeRemaining = newParticle->lifespan;
 
             //Randomizing angle of trajectory and converting degrees to radians
             float angle = distAngle(rd) * (PI / 180.f);
@@ -243,7 +242,11 @@ int main(void)
 
             //Add rendered particle in the list
             RenderParticles.push_back(rp);
+
+            //Increment particles spawned to keep in track
             particlesSpawned++;
+
+            //Set lastSpawnTime to currentTime for the next particle to spawn
             lastSpawnTime = currentTime;
         }
 
