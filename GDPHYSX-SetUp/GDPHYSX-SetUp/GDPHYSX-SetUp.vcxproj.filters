@@ -84,13 +84,10 @@
     <ClCompile Include="P6\Spring\Bungee.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="P6\Links\Chain.cpp">
+    <ClCompile Include="P6\Links\Cable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="RenderLine.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="P6\Links\Cable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -161,13 +158,10 @@
     <ClInclude Include="P6\Spring\Bungee.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="P6\Links\Chain.h">
+    <ClInclude Include="P6\Links\Cable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="RenderLine.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="P6\Links\Cable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

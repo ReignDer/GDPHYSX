@@ -1,6 +1,6 @@
-#include "Chain.h"
+#include "Cable.h"
 
-P6::ParticleContact* P6::Chain::GetContact()
+P6::ParticleContact* P6::Cable::GetContact()
 {
 	float currLen = CurrentLength();
 

@@ -140,7 +140,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="P6\Links\Cable.cpp" />
-    <ClCompile Include="P6\Links\Chain.cpp" />
     <ClCompile Include="P6\Spring\Bungee.cpp" />
     <ClCompile Include="P6\Spring\AnchoredSpring.cpp" />
     <ClCompile Include="P6\ContactResolver.cpp" />
@@ -168,7 +167,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="P6\Links\Cable.h" />
-    <ClInclude Include="P6\Links\Chain.h" />
     <ClInclude Include="P6\Spring\Bungee.h" />
     <ClInclude Include="P6\Spring\AnchoredSpring.h" />
     <ClInclude Include="P6\ContactResolver.h" />
