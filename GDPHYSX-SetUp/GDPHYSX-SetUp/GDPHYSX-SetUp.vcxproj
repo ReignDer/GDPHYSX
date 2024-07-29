@@ -139,6 +139,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="P6\Links\Cable.cpp" />
+    <ClCompile Include="P6\Links\Chain.cpp" />
+    <ClCompile Include="P6\Spring\Bungee.cpp" />
+    <ClCompile Include="P6\Spring\AnchoredSpring.cpp" />
+    <ClCompile Include="P6\ContactResolver.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="P6\DragForceGenerator.cpp" />
     <ClCompile Include="P6\GravityForceGenerator.cpp" />
@@ -153,10 +158,20 @@
     <ClCompile Include="P6\MyVector.cpp" />
     <ClCompile Include="P6\PhysicsWorld.cpp" />
     <ClCompile Include="P6\RenderParticle.cpp" />
+    <ClCompile Include="P6\ParticleContact.cpp" />
+    <ClCompile Include="P6\Links\ParticleLink.cpp" />
+    <ClCompile Include="P6\Spring\ParticleSpring.cpp" />
     <ClCompile Include="PerspectiveCamera.cpp" />
+    <ClCompile Include="P6\Links\Rod.cpp" />
+    <ClCompile Include="RenderLine.cpp" />
     <ClCompile Include="Shader.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="P6\Links\Cable.h" />
+    <ClInclude Include="P6\Links\Chain.h" />
+    <ClInclude Include="P6\Spring\Bungee.h" />
+    <ClInclude Include="P6\Spring\AnchoredSpring.h" />
+    <ClInclude Include="P6\ContactResolver.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="P6\DragForceGenerator.h" />
     <ClInclude Include="P6\GravityForceGenerator.h" />
@@ -169,7 +184,12 @@
     <ClInclude Include="P6\MyVector.h" />
     <ClInclude Include="P6\PhysicsWorld.h" />
     <ClInclude Include="P6\RenderParticle.h" />
+    <ClInclude Include="P6\ParticleContact.h" />
+    <ClInclude Include="P6\Links\ParticleLink.h" />
+    <ClInclude Include="P6\Spring\ParticleSpring.h" />
     <ClInclude Include="PerspectiveCamera.h" />
+    <ClInclude Include="P6\Links\Rod.h" />
+    <ClInclude Include="RenderLine.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="tiny_obj_loader.h" />
   </ItemGroup>

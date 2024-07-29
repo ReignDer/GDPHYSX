@@ -1,10 +1,43 @@
-﻿  GDPHYSX-SetUp.cpp
-C:\Users\Mathieu Marc Pobre\Documents\GitHub\GDPHYSX\GDPHYSX-SetUp\GDPHYSX-SetUp\GDPHYSX-SetUp.cpp(496,67): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
-C:\Users\Mathieu Marc Pobre\Documents\GitHub\GDPHYSX\GDPHYSX-SetUp\GDPHYSX-SetUp\GDPHYSX-SetUp.cpp(750,21): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\Mathieu Marc Pobre\Documents\GitHub\GDPHYSX\GDPHYSX-SetUp\GDPHYSX-SetUp\GDPHYSX-SetUp.cpp(1033,45): warning C4305: 'argument': truncation from 'double' to 'const float'
+﻿  Chain.cpp
+  Bungee.cpp
+  AnchoredSpring.cpp
+  ContactResolver.cpp
+  DragForceGenerator.cpp
+  GravityForceGenerator.cpp
+C:\Users\Mathieu Marc Pobre\Documents\GitHub\GDPHYSX\GDPHYSX-SetUp\GDPHYSX-SetUp\P6\GravityForceGenerator.h(12,35): warning C4305: 'argument': truncation from 'double' to 'const float'
+  (compiling source file 'P6/GravityForceGenerator.cpp')
+  
+  ForceRegistry.cpp
+  ForceGenerator.cpp
+  GDPHYSX-SetUp.cpp
+C:\Users\Mathieu Marc Pobre\Documents\GitHub\GDPHYSX\GDPHYSX-SetUp\GDPHYSX-SetUp\P6\GravityForceGenerator.h(12,35): warning C4305: 'argument': truncation from 'double' to 'const float'
+  (compiling source file 'GDPHYSX-SetUp.cpp')
+  
+C:\Users\Mathieu Marc Pobre\Documents\GitHub\GDPHYSX\GDPHYSX-SetUp\GDPHYSX-SetUp\P6\PhysicsWorld.h(37,70): warning C4305: 'argument': truncation from 'double' to 'const float'
+  (compiling source file 'GDPHYSX-SetUp.cpp')
+  
+C:\Users\Mathieu Marc Pobre\Documents\GitHub\GDPHYSX\GDPHYSX-SetUp\GDPHYSX-SetUp\GDPHYSX-SetUp.cpp(205,73): warning C4305: 'argument': truncation from 'double' to 'const float'
+C:\Users\Mathieu Marc Pobre\Documents\GitHub\GDPHYSX\GDPHYSX-SetUp\GDPHYSX-SetUp\GDPHYSX-SetUp.cpp(207,79): warning C4305: 'argument': truncation from 'double' to 'const float'
+C:\Users\Mathieu Marc Pobre\Documents\GitHub\GDPHYSX\GDPHYSX-SetUp\GDPHYSX-SetUp\GDPHYSX-SetUp.cpp(149,24): warning C4101: 'rd': unreferenced local variable
+  P6Particles.cpp
+  MyVector.cpp
+  PhysicsWorld.cpp
+C:\Users\Mathieu Marc Pobre\Documents\GitHub\GDPHYSX\GDPHYSX-SetUp\GDPHYSX-SetUp\P6\GravityForceGenerator.h(12,35): warning C4305: 'argument': truncation from 'double' to 'const float'
+  (compiling source file 'P6/PhysicsWorld.cpp')
+  
+C:\Users\Mathieu Marc Pobre\Documents\GitHub\GDPHYSX\GDPHYSX-SetUp\GDPHYSX-SetUp\P6\PhysicsWorld.h(37,70): warning C4305: 'argument': truncation from 'double' to 'const float'
+  (compiling source file 'P6/PhysicsWorld.cpp')
+  
+  RenderParticle.cpp
+  ParticleContact.cpp
+  ParticleLink.cpp
+  ParticleSpring.cpp
+  Rod.cpp
+  RenderLine.cpp
+C:\Users\Mathieu Marc Pobre\Documents\GitHub\GDPHYSX\GDPHYSX-SetUp\GDPHYSX-SetUp\RenderLine.cpp(81,53): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
   Generating code
-  1 of 2264 functions (<0.1%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
-    14 functions had inline decision re-evaluated but remain unchanged
+  207 of 2581 functions ( 8.0%) were compiled, the rest were copied from previous compilation.
+    103 functions were new in current compilation
+    306 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   GDPHYSX-SetUp.vcxproj -> C:\Users\Mathieu Marc Pobre\Documents\GitHub\GDPHYSX\GDPHYSX-SetUp\x64\Release\GDPHYSX-SetUp.exe

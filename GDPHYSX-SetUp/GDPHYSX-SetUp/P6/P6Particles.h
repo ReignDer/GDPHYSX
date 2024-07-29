@@ -22,6 +22,10 @@ namespace P6 {
 		float mass = 0;
 		float damping = 0.9f;
 		float lifespan = 1.f;
+		float radius = 1.f;
+		float restitution = 0.9f;
+		bool hasGravity = true;
+		bool movable = true;
 
 		//not used
 		float lifeRemaining = 0.f;

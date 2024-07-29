@@ -53,10 +53,12 @@ void P6::P6Particles::UpdateLifeSpan(float time)
 
 void P6::P6Particles::Update(float time)
 {
-	this->UpdateLifeSpan(time);
-	this->UpdatePosition(time);
-	this->UpdateVelocity(time);
-	//Reset the forces after calculations
-	this->ResetForce();
+	if (movable) {
+		//this->UpdateLifeSpan(time);
+		this->UpdatePosition(time);
+		this->UpdateVelocity(time);
+		//Reset the forces after calculations
+		this->ResetForce();
+	}
 }
 

@@ -17,6 +17,7 @@ namespace P6 {
 			explicit operator glm::vec3() const { return glm::vec3(x, y, z); }
 
 			void operator+= (const MyVector v);
+			void operator-= (const MyVector v);
 
 			//Addition
 			MyVector operator+ (const MyVector v);
@@ -42,8 +43,12 @@ namespace P6 {
 			//Magnitude
 			float magnitude();
 
+			float magnitudeSqrd();
+
 			//Direction
 			MyVector normalize();
+
+			float distance(const MyVector v);
 	};
 }
 

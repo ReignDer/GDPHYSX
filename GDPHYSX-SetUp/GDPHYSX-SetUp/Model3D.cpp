@@ -78,6 +78,7 @@ Model3D::Model3D(std::string image, std::string normal_img, std::string obj) {
 Model3D::~Model3D() {
     glDeleteVertexArrays(1, &this->VAO);
     glDeleteBuffers(1, &this->VBO);
+    glDeleteShader(this->shaderProg);
 }
 
 

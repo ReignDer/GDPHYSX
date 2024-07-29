@@ -23,6 +23,13 @@ void P6::MyVector::operator+=(const MyVector v) {
 	this->z += v.z;
 }
 
+void P6::MyVector::operator-=(const MyVector v)
+{
+	this->x -= v.x;
+	this->y -= v.y;
+	this->z -= v.z;
+}
+
 P6::MyVector P6::MyVector::operator+(const MyVector v) {
 	return MyVector(this->x + v.x, this->y + v.y, this->z + v.z);
 }
@@ -58,8 +65,18 @@ float P6::MyVector::magnitude() {
 	return sqrt(this->x * this->x + this->y * this->y + this->z * this->z);
 }
 
+float P6::MyVector::magnitudeSqrd()
+{
+	return this->x * this->x + this->y * this->y + this->z * this->z;
+}
+
 //Direction
 
 P6::MyVector P6::MyVector::normalize() {
 	return MyVector(this->x / magnitude(), this->y / magnitude(), this->z / magnitude());
+}
+
+float P6::MyVector::distance(const MyVector v)
+{
+	return MyVector(*this-v).magnitude();
 }

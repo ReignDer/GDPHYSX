@@ -16,6 +16,7 @@
 #include "OrthoCamera.h"
 #include "PerspectiveCamera.h"
 #include "Input.h"
+#include "RenderLine.h"
 
 
 #include "P6/MyVector.h"
@@ -23,6 +24,15 @@
 #include "P6/PhysicsWorld.h"
 #include "P6/RenderParticle.h"
 #include "P6/DragForceGenerator.h"
+#include "P6/ParticleContact.h"
+#include "P6/ContactResolver.h"
+#include "P6/Links/ParticleLink.h"
+#include "P6/Links/Rod.h"
+#include "P6/Links/Cable.h"
+#include "P6/Spring/AnchoredSpring.h"
+#include "P6/Spring/ParticleSpring.h"
+#include "P6/Spring/Bungee.h"
+
 
 
 #define PI 3.14159
@@ -63,7 +73,7 @@ int main(void)
         return -1;
 
     /* Create a windowed mode window and its OpenGL context */
-    window = glfwCreateWindow(800, 800, "ReignEngine", NULL, NULL);
+    window = glfwCreateWindow(800, 800, "Group4/ReignEngine", NULL, NULL);
     if (!window)
     {
         glfwTerminate();
@@ -94,7 +104,7 @@ int main(void)
     //Keyboard
     glfwSetKeyCallback(window, Input::Key_Callback);
 
-    /*----------------Instantiate shares and create the model---------------*/
+    /*----------------Instantiate shaders and create the model---------------*/
     Shader shader(v, f);
 
     //Texture, OBJ
@@ -109,16 +119,37 @@ int main(void)
     /*----------------Initialize Physics and particle list----------------*/
     P6::PhysicsWorld pWorld = P6::PhysicsWorld();
     std::list<RenderParticle*> RenderParticles;
+    std::list<RenderLine*> RenderLines;
 
-    //Amount of Particles
-    int sparkAmount = 0;
-    std::cout << "Enter Spark Amount: ";
-    std::cin >> sparkAmount;
+    //Requirements for pendelum
+    int cableLength;
+    float particleGap;
+    float particleRadius;
+    float gravityStrength;
+    float xForce;
+    float yForce;
+    float zForce;
 
-    //Spawning particles one by one
-    const float spawnInterval = 100.f; //In milliseconds
-    int maxParticles = sparkAmount;
-    int particlesSpawned = 0;
+    std::cout << "Cable Length: ";
+    std::cin >> cableLength;
+    std::cout << "Particle Gap: ";
+    std::cin >> particleGap;
+    std::cout << "Particle Radius: ";
+    std::cin >> particleRadius;
+    std::cout << "Gravity Strength: ";
+    std::cin >> gravityStrength;
+    std::cout << "ApplyForce"<<'\n';
+    std::cout << "x: ";
+    std::cin >> xForce;
+    std::cout << "y: ";
+    std::cin >> yForce;
+    std::cout << "z: ";
+    std::cin >> zForce;
+
+    //Set radius of Particle
+    P6::MyVector radius = P6::MyVector(particleRadius, particleRadius, particleRadius);
+    pWorld.SetGravity(gravityStrength); //Set Gravity
+
 
     //Clock for spawn
     using clock = std::chrono::steady_clock;
@@ -147,6 +178,165 @@ int main(void)
     std::uniform_real_distribution<float> distAngle_2(0.f, 360.f);
 
 
+    //Create Anchor using Particle Link
+    P6::P6Particles p1 = P6::P6Particles();
+    p1.Position = P6::MyVector(2.f * (- particleGap - particleRadius), 100, 0);//Gap from Center and Adjacent particle
+    p1.radius = particleRadius;
+    p1.mass = 50.f;
+    pWorld.AddParticle(&p1);
+
+    //Anchor
+    P6::P6Particles p2 = P6::P6Particles();
+    p2.Position = P6::MyVector( 2.f*(- particleGap - particleRadius), 101, 0); //Gap from Center and Adjacent particle
+    p2.radius = 0.f;
+    p2.mass = 1;
+    p2.hasGravity = false; // not affected by gravity
+    p2.movable = false; //Immovable
+    pWorld.AddParticle(&p2);
+
+    //Particle
+    P6::P6Particles p3 = P6::P6Particles();
+    p3.Position = P6::MyVector(-particleGap - particleRadius, 100, 0);//Gap from Center and Adjacent particle
+    p3.radius = particleRadius;
+    p3.mass = 50.f;
+    pWorld.AddParticle(&p3);
+
+    //Anchor
+    P6::P6Particles p4 = P6::P6Particles();
+    p4.Position = P6::MyVector(-particleGap - particleRadius, 101, 0);//Gap from Center and Adjacent particle
+    p4.radius = 0.f;
+    p4.mass = 1;
+    p4.hasGravity = false;// not affected by gravity
+    p4.movable = false;//Immovable
+    pWorld.AddParticle(&p4);
+
+    //Particle
+    P6::P6Particles p5 = P6::P6Particles();
+    p5.Position = P6::MyVector(0, 100, 0); //Center
+    p5.radius = particleRadius;
+    p5.mass = 50.f;
+    pWorld.AddParticle(&p5);
+
+    //Anchor
+    P6::P6Particles p6 = P6::P6Particles();
+    p6.Position = P6::MyVector(0, 101, 0);
+    p6.radius = 0.f;
+    p6.mass = 1;
+    p6.hasGravity = false;// not affected by gravity
+    p6.movable = false;//Immovable
+    pWorld.AddParticle(&p6);
+
+    //Particle
+    P6::P6Particles p7 = P6::P6Particles();
+    p7.Position = P6::MyVector(particleGap + particleRadius, 100, 0); //Center
+    p7.radius = particleRadius;
+    p7.mass = 50.f;
+    pWorld.AddParticle(&p7);
+
+    //Anchor
+    P6::P6Particles p8 = P6::P6Particles();
+    p8.Position = P6::MyVector(particleGap + particleRadius, 101, 0); //Gap from Center and Adjacent particle
+    p8.radius = 0.f;
+    p8.mass = 1;
+    p8.hasGravity = false;// not affected by gravity
+    p8.movable = false;//Immovable
+    pWorld.AddParticle(&p8);
+
+    //Particle
+    P6::P6Particles p9 = P6::P6Particles();
+    p9.Position = P6::MyVector(2 * (particleGap + particleRadius), 100, 0); //Gap from Center and Adjacent particle
+    p9.radius = particleRadius;
+    p9.mass = 50.f;
+    pWorld.AddParticle(&p9);
+
+    //Anchor
+    P6::P6Particles p10 = P6::P6Particles();
+    p10.Position = P6::MyVector(2 * (particleGap + particleRadius), 101, 0); //Gap from Center and Adjacent particle
+    p10.radius = 0.f;
+    p10.mass = 1;
+    p10.hasGravity = false;// not affected by gravity
+    p10.movable = false;//Immovable
+    pWorld.AddParticle(&p10);
+
+    /*-----------Create Cable-----------*/
+    P6::Cable* c1 = new P6::Cable();
+    c1->particles[0] = &p2;
+    c1->particles[1] = &p1;
+    c1->length = cableLength;
+
+    pWorld.Links.push_back(c1);
+
+    P6::Cable* c2 = new P6::Cable();
+    c2->particles[0] = &p4;
+    c2->particles[1] = &p3;
+    c2->length = cableLength;
+
+    pWorld.Links.push_back(c2);
+
+    P6::Cable* c3 = new P6::Cable();
+    c3->particles[0] = &p6;
+    c3->particles[1] = &p5;
+    c3->length = cableLength;
+
+    pWorld.Links.push_back(c3);
+
+    P6::Cable* c4 = new P6::Cable();
+    c4->particles[0] = &p8;
+    c4->particles[1] = &p7;
+    c4->length = cableLength;
+
+    pWorld.Links.push_back(c4);
+
+    P6::Cable* c5 = new P6::Cable();
+    c5->particles[0] = &p10;
+    c5->particles[1] = &p9;
+    c5->length = cableLength;
+
+    pWorld.Links.push_back(c5);
+
+    /*-------------Render Lines-----------------*/
+
+    RenderLine* line1 = new RenderLine(&p4, &p3);
+    line1->setShaders(shader.getShaderProg());
+    line1->setColor(glm::vec3(1,1,1));
+    RenderLines.push_back(line1);
+
+    RenderLine* line2 = new RenderLine(&p2, &p1);
+    line2->setShaders(shader.getShaderProg());
+    line2->setColor(glm::vec3(1, 1, 1));
+    RenderLines.push_back(line2);
+
+    RenderLine* line3 = new RenderLine(&p6, &p5);
+    line3->setShaders(shader.getShaderProg());
+    line3->setColor(glm::vec3(1, 1, 1));
+    RenderLines.push_back(line3);
+
+    RenderLine* line4 = new RenderLine(&p8, &p7);
+    line4->setShaders(shader.getShaderProg());
+    line4->setColor(glm::vec3(1, 1, 1));
+    RenderLines.push_back(line4);
+
+    RenderLine* line5 = new RenderLine(&p10, &p9);
+    line5->setShaders(shader.getShaderProg());
+    line5->setColor(glm::vec3(1, 1, 1));
+    RenderLines.push_back(line5);
+
+
+    /*-------------------Render Particle--------------------------------*/
+
+    RenderParticle* rp1 = new RenderParticle(&p1, &object, P6::MyVector(0.4,0,0), radius);
+    RenderParticles.push_back(rp1);
+    RenderParticle* rp2 = new RenderParticle(&p3, &object, P6::MyVector(0, 0, 0.4), radius);
+    RenderParticles.push_back(rp2);
+    RenderParticle* rp3 = new RenderParticle(&p5, &object, P6::MyVector(0, 0.4, 0.4), radius);
+    RenderParticles.push_back(rp3);
+    RenderParticle* rp4 = new RenderParticle(&p7, &object, P6::MyVector(0.4, 0, 0), radius);
+    RenderParticles.push_back(rp4);
+    RenderParticle* rp5 = new RenderParticle(&p9, &object, P6::MyVector(0, 0, 0.4), radius);
+    RenderParticles.push_back(rp5);
+
+
+
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
     {
@@ -171,9 +361,9 @@ int main(void)
 
             //std::cout << "P6 Update\n";
 
-            //Press Space to Pause Physics World
-            if(!input.getSpace())   
-                pWorld.Update((float)ms.count() / 1000);
+  
+            pWorld.Update((float)ms.count() / 1000);
+
 
             //std::cout << "Normal Update\n";
         }
@@ -199,55 +389,10 @@ int main(void)
            pCameraOrtho->performCamera(shader.getShaderProg(), window);
         }
         
-        //Spawn particles one by one and pause spawning when space is pressed
-        if (particlesSpawned < maxParticles && elapsedTime.count() >= spawnInterval && !input.getSpace()) {
-
-            /*------------Create New Particle-----------------*/
-            P6::P6Particles* newParticle = new P6::P6Particles();
-
-            //Set Position to the bottom
-            newParticle->Position = P6::MyVector(0, -380, 0);
-
-            //Set mass and randomize lifespan from 1-10 second/s;
-            newParticle->mass = 0.01f;
-            newParticle->lifespan = dist(rd);
-
-            //Randomizing angle of trajectory and converting degrees to radians
-            float angle = distAngle(rd) * (PI / 180.f);
-            float angle_2 = distAngle_2(rd) * (PI / 180.f);
-            //Randomize velocity of particle
-            float velocity = distForce(rd);
-
-            //Add force to the sparks to create a fountain firework
-            P6::MyVector randomForce = P6::MyVector(velocity * std::cosf(angle) * std::cosf(angle_2),
-               velocity * std::sinf(angle), velocity * std::cosf(angle) * std::sinf(angle_2));
-            newParticle->AddForce(randomForce);
-
-            //Add particles to the Physics World 
-            pWorld.AddParticle(newParticle);
-
-            /*---------------Rendering particle----------------*/
-
-            //Randomize Color and Radius 
-            //Randomization of Color is between 0 to 1
-            P6::MyVector randomColor = P6::MyVector((float)std::rand() / RAND_MAX,
-                (float)std::rand() / RAND_MAX, (float)std::rand() / RAND_MAX);
-
-            //Randomize radius from 2-10
-            int randomRadius = 2 + (std::rand() % 10);
-            P6::MyVector randomScale = P6::MyVector(randomRadius, randomRadius, randomRadius);
-
-            //Instantiate particle
-            RenderParticle* rp = new RenderParticle(newParticle, &object, randomColor, randomScale);
-
-            //Add rendered particle in the list
-            RenderParticles.push_back(rp);
-
-            //Increment particles spawned to keep in track
-            particlesSpawned++;
-
-            //Set lastSpawnTime to currentTime for the next particle to spawn
-            lastSpawnTime = currentTime;
+        //Press Space to move Left most Particle
+        if (input.getSpace()) {
+            input.setSpace(false);
+            p1.AddForce(P6::MyVector(xForce, yForce, zForce));
         }
 
         //Rendering Particles
@@ -258,12 +403,20 @@ int main(void)
             (*i)->Draw();
         }
 
+        //Rendering Lines
+        for (std::list<RenderLine*>::iterator i = RenderLines.begin();
+            i != RenderLines.end();
+            i++
+            ) {
+            (*i)->draw();
+        }
         /* Swap front and back buffers */
         glfwSwapBuffers(window);
 
         /* Poll for and process events */
         glfwPollEvents();
     }
+
     glfwTerminate();
     return 0;
 }
